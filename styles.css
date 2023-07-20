@@ -3,3 +3,20 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+body {
+    background-color: #191919;
+    color: #FFF;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    min-height: 100vh;
+}
+
+#game-screen {
+    background-color: #333;
+    border-radius: 10px;
+    width: 80%;
+}
