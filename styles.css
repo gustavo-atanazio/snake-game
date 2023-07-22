@@ -22,7 +22,7 @@ body img {
     width: 10rem;
 }
 
-body .start {
+.start {
     padding: 0.7rem 2rem;
     border: none;
     border-radius: 10px;
@@ -31,10 +31,43 @@ body .start {
     background-color: #54B435;
 }
 
+.arrows-container {
+    display: none;
+    width: 100%;
+    height: 150px;
+    position: relative;
+}
+
+.arrows-container img {
+    width: 50px;
+    position: absolute;
+}
+
+.up-arrow {
+    top: 0;
+    left: 180px;
+}
+
+.left-arrow {
+    right: 235px;
+    top: 50px;
+}
+
+.right-arrow {
+    left: 230px;
+    top: 50px;
+}
+
+.down-arrow {
+    bottom: 0;
+    left: 180px;
+}
+
 #game-screen {
     background-color: #333;
     border-radius: 10px;
     width: 80%;
+    margin-top: 12rem;
 }
 
 @media screen and (min-width: 768px) {
