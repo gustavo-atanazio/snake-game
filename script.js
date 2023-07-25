@@ -2,12 +2,9 @@ const body = document.querySelector("body");
 const startButton = document.querySelector(".start");
 const buttonsContainer = document.querySelector(".arrows-container");
 
-let context;
+let canvas, context;
 
-let upButton;
-let leftButton;
-let rightButton;
-let downButton;
+let upButton, leftButton, rightButton, downButton;
 
 const snake = [
     {x: 200, y: 200},
@@ -23,6 +20,13 @@ const snakeColors = {
 const snakeSize = 50;
 let direction = "right";
 
+const apple = {
+    x: 0,
+    y: 0
+};
+
+let appleSpawned = false;
+
 startButton.addEventListener("click", startGame);
 
 function startGame() {
@@ -33,19 +37,18 @@ function startGame() {
 }
 
 function createCanvas() {
-    const canvas = document.createElement("canvas");
+    const canvasElement = document.createElement("canvas");
 
     body.innerHTML = "";
-    body.appendChild(canvas);
+    body.appendChild(canvasElement);
 
-    canvas.innerText = "Seu navegador não suporta o jogo.";
-    canvas.width = "700";
-    canvas.height = "700";
-    canvas.id = "game-screen";
+    canvasElement.innerText = "Seu navegador não suporta o jogo.";
+    canvasElement.width = "700";
+    canvasElement.height = "700";
+    canvasElement.id = "game-screen";
     
+    canvas = document.querySelector("canvas");
     context = canvas.getContext("2d");
-    // context.fillStyle = "#F00";
-    // context.fillRect(10, 10, 10, 10);
 }
 
 function showButtons() {
@@ -77,6 +80,10 @@ function drawGame() {
     drawLine(colors.secondColor, colors.firstColor, 500);
     drawLine(colors.firstColor, colors.secondColor, 600);
 
+    // context.fillStyle = "#F00";
+    // context.fillRect(10, 10, 10, 10);
+
+    spawnApple();
     drawSnake();
 }
 
@@ -184,4 +191,26 @@ function checkButtonPressed() {
             downButton.classList.remove("pressed");
         }, 300);
     });
+}
+
+function spawnApple() {
+    // if (appleSpawned === true) return;
+
+    let { x, y } = apple;
+
+    const randomNumber = (min, max) => {
+        return Math.floor(Math.random() * (max - min) + min);
+    }
+
+    const randomPosition = () => {
+        const number = randomNumber(0, canvas.width - snakeSize);
+        return Math.floor(number / snakeSize) * snakeSize;
+    }
+
+    x = randomPosition();
+    y = randomPosition();
+    
+    context.fillStyle = "#F00";
+    context.fillRect(x, y, 50, 50);
+    appleSpawned = true;
 }
