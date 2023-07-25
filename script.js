@@ -21,21 +21,13 @@ const snakeColors = {
 };
 
 const snakeSize = 50;
-let direction;
+let direction = "right";
 
 startButton.addEventListener("click", startGame);
 
 function startGame() {
     createCanvas();
-
-    // Showing buttons
-    body.appendChild(buttonsContainer);
-    buttonsContainer.style.display = "block";
-
-    // Adjusting the view
-    body.style.justifyContent = "space-around";
-    body.style.gap = "0";
-
+    showButtons();
     drawGame();
     gameLoop();
 }
@@ -54,6 +46,21 @@ function createCanvas() {
     context = canvas.getContext("2d");
     // context.fillStyle = "#F00";
     // context.fillRect(10, 10, 10, 10);
+}
+
+function showButtons() {
+    // Showing buttons
+    body.appendChild(buttonsContainer);
+    buttonsContainer.style.display = "block";
+
+    // Adjusting the view
+    body.style.justifyContent = "space-around";
+    body.style.gap = "0";
+
+    upButton = document.querySelector(".up-arrow");
+    leftButton = document.querySelector(".left-arrow");
+    rightButton = document.querySelector(".right-arrow");
+    downButton = document.querySelector(".down-arrow");
 }
 
 function drawGame() {
@@ -79,8 +86,8 @@ function gameLoop() {
 
         context.clearRect(0, 0, 700, 700);
         
+        checkButtonPressed();
         moveSnake();
-
         drawGame();
     }, 300);
 }
@@ -133,33 +140,48 @@ function drawSnake() {
     })
 }
 
-// function createButtons() {
-//     const buttonsContainer = document.createElement("div");
-//     buttonsContainer.classList.add("arrows-container");
-//     body.appendChild(buttonsContainer);
+function checkButtonPressed() {
+    upButton.addEventListener("click", () => {
+        if (direction === "down") return;
 
-//     upButton = document.createElement("img");
-//     buttonsContainer.appendChild(upButton);
-//     upButton.src = "img/up_arrow.png";
-//     upButton.classList.add("up-arrow");
+        upButton.classList.add("pressed");
+        direction = "up";
 
-//     leftButton = document.createElement("img");
-//     buttonsContainer.appendChild(leftButton);
-//     leftButton.src = "img/left_arrow.png";
-//     leftButton.classList.add("left-arrow");
+        setTimeout(() => {
+            upButton.classList.remove("pressed");
+        }, 300);
+    });
 
-//     rightButton = document.createElement("img");
-//     buttonsContainer.appendChild(rightButton);
-//     rightButton.src = "img/right_arrow.png";
-//     rightButton.classList.add("right-arrow");
+    leftButton.addEventListener("click", () => {
+        if (direction === "right") return;
 
-//     downButton = document.createElement("img");
-//     buttonsContainer.appendChild(downButton);
-//     downButton.src = "img/down_arrow.png";
-//     downButton.classList.add("down-arrow");
+        leftButton.classList.add("pressed");
+        direction = "left";
 
-//     upButton = document.querySelector(".up-arrow");
-//     leftButton = document.querySelector(".left-arrow");
-//     rightButton = document.querySelector(".right-arrow");
-//     downButton = document.querySelector(".down-arrow");
-// }
+        setTimeout(() => {
+            leftButton.classList.remove("pressed");
+        }, 300);
+    });
+
+    rightButton.addEventListener("click", () => {
+        if (direction === "left") return;
+
+        rightButton.classList.add("pressed");
+        direction = "right";
+
+        setTimeout(() => {
+            rightButton.classList.remove("pressed");
+        }, 300);
+    });
+
+    downButton.addEventListener("click", () => {
+        if (direction === "up") return;
+
+        downButton.classList.add("pressed");
+        direction = "down";
+
+        setTimeout(() => {
+            downButton.classList.remove("pressed");
+        }, 300);
+    });
+}
