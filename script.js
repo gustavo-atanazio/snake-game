@@ -52,6 +52,12 @@ function createCanvas() {
 }
 
 function showButtons() {
+    // Desktop verification
+    if (window.screen.width >= 768) {
+        canvas.style.marginTop = "0";
+        return;
+    }
+
     // Showing buttons
     body.appendChild(buttonsContainer);
     buttonsContainer.style.display = "block";
@@ -111,6 +117,40 @@ function drawLine(firstColor, secondColor, yPosition) {
     }
 }
 
+function spawnApple() {
+    // if (appleSpawned === true) return;
+
+    let { x, y } = apple;
+
+    const randomNumber = (min, max) => {
+        return Math.floor(Math.random() * (max - min) + min);
+    }
+
+    const randomPosition = () => {
+        const number = randomNumber(0, canvas.width - snakeSize);
+        return Math.floor(number / snakeSize) * snakeSize;
+    }
+
+    x = randomPosition();
+    y = randomPosition();
+    
+    context.fillStyle = "#F00";
+    context.fillRect(x, y, 50, 50);
+    appleSpawned = true;
+}
+
+function drawSnake() {
+    context.fillStyle = snakeColors.body;
+
+    snake.forEach((position, index) => {
+        if (index === snake.length - 1) {
+            context.fillStyle = snakeColors.head;
+        }
+
+        context.fillRect(position.x, position.y, snakeSize, snakeSize);
+    })
+}
+
 function moveSnake() {
     if (!direction) return;
 
@@ -135,82 +175,72 @@ function moveSnake() {
     snake.shift();
 }
 
-function drawSnake() {
-    context.fillStyle = snakeColors.body;
-
-    snake.forEach((position, index) => {
-        if (index === snake.length - 1) {
-            context.fillStyle = snakeColors.head;
-        }
-
-        context.fillRect(position.x, position.y, snakeSize, snakeSize);
-    })
-}
-
 function checkButtonPressed() {
-    upButton.addEventListener("click", () => {
-        if (direction === "down") return;
-
-        upButton.classList.add("pressed");
-        direction = "up";
-
-        setTimeout(() => {
-            upButton.classList.remove("pressed");
-        }, 300);
-    });
-
-    leftButton.addEventListener("click", () => {
-        if (direction === "right") return;
-
-        leftButton.classList.add("pressed");
-        direction = "left";
-
-        setTimeout(() => {
-            leftButton.classList.remove("pressed");
-        }, 300);
-    });
-
-    rightButton.addEventListener("click", () => {
-        if (direction === "left") return;
-
-        rightButton.classList.add("pressed");
-        direction = "right";
-
-        setTimeout(() => {
-            rightButton.classList.remove("pressed");
-        }, 300);
-    });
-
-    downButton.addEventListener("click", () => {
-        if (direction === "up") return;
-
-        downButton.classList.add("pressed");
-        direction = "down";
-
-        setTimeout(() => {
-            downButton.classList.remove("pressed");
-        }, 300);
-    });
-}
-
-function spawnApple() {
-    // if (appleSpawned === true) return;
-
-    let { x, y } = apple;
-
-    const randomNumber = (min, max) => {
-        return Math.floor(Math.random() * (max - min) + min);
-    }
-
-    const randomPosition = () => {
-        const number = randomNumber(0, canvas.width - snakeSize);
-        return Math.floor(number / snakeSize) * snakeSize;
-    }
-
-    x = randomPosition();
-    y = randomPosition();
+    // Mobile verification
+    if (window.screen.width < 768) {
+        upButton.addEventListener("click", () => {
+            if (direction === "down") return;
     
-    context.fillStyle = "#F00";
-    context.fillRect(x, y, 50, 50);
-    appleSpawned = true;
+            upButton.classList.add("pressed");
+            direction = "up";
+    
+            setTimeout(() => {
+                upButton.classList.remove("pressed");
+            }, 300);
+        });
+    
+        leftButton.addEventListener("click", () => {
+            if (direction === "right") return;
+    
+            leftButton.classList.add("pressed");
+            direction = "left";
+    
+            setTimeout(() => {
+                leftButton.classList.remove("pressed");
+            }, 300);
+        });
+    
+        rightButton.addEventListener("click", () => {
+            if (direction === "left") return;
+    
+            rightButton.classList.add("pressed");
+            direction = "right";
+    
+            setTimeout(() => {
+                rightButton.classList.remove("pressed");
+            }, 300);
+        });
+    
+        downButton.addEventListener("click", () => {
+            if (direction === "up") return;
+    
+            downButton.classList.add("pressed");
+            direction = "down";
+    
+            setTimeout(() => {
+                downButton.classList.remove("pressed");
+            }, 300);
+        });
+    }
+
+    // Desktop verification
+    if (window.screen.width >= 768) {
+        document.addEventListener("keydown", ({ key }) => {
+            if (key === "ArrowUp" && direction !== "down") {
+                direction = "up";
+            }
+
+            if (key === "ArrowLeft" && direction !== "right") {
+                direction = "left";
+            }
+
+            if (key === "ArrowRight" && direction !== "left") {
+                direction = "right";
+            }
+
+            if (key === "ArrowDown" && direction !== "up") {
+                direction = "down";
+            }
+        });
+    }
 }
