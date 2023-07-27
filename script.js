@@ -6,6 +6,8 @@ let canvas, context;
 
 let upButton, leftButton, rightButton, downButton;
 
+const pointSize = 50;
+
 const snake = [
     {x: 200, y: 200},
     {x: 250, y: 200},
@@ -17,24 +19,29 @@ const snakeColors = {
     head: "#F86F03"
 };
 
-const snakeSize = 50;
 let direction = "right";
 
+function randomPosition() {
+    const randomNumber = (min, max) => {
+        return Math.floor(Math.random() * (max - min) + min);
+    }
+
+    // Note: 700 must be the canvas width
+    const number = randomNumber(0, 700 - pointSize);
+    return Math.floor(number / pointSize) * pointSize;
+}
+
 const apple = {
-    x: 0,
-    y: 0
+    x: randomPosition(),
+    y: randomPosition()
 };
 
-let appleSpawned = false;
-
-startButton.addEventListener("click", startGame);
-
-function startGame() {
+startButton.addEventListener("click", () => {
     createCanvas();
     showButtons();
-    drawGame();
+    drawBoard();
     gameLoop();
-}
+});
 
 function createCanvas() {
     const canvasElement = document.createElement("canvas");
@@ -72,7 +79,7 @@ function showButtons() {
     downButton = document.querySelector(".down-arrow");
 }
 
-function drawGame() {
+function drawBoard() {
     const colors = {
         firstColor: "#54B435",
         secondColor: "#82CD47"
@@ -88,20 +95,17 @@ function drawGame() {
 
     // context.fillStyle = "#F00";
     // context.fillRect(10, 10, 10, 10);
-
-    spawnApple();
-    drawSnake();
 }
 
 function gameLoop() {
     setInterval(() => {
-        console.log("rodando");
-
-        context.clearRect(0, 0, 700, 700);
+        context.clearRect(0, 0, canvas.width, canvas.height);
         
+        drawBoard();
+        spawnApple();
         checkButtonPressed();
         moveSnake();
-        drawGame();
+        drawSnake();
     }, 300);
 }
 
@@ -118,25 +122,10 @@ function drawLine(firstColor, secondColor, yPosition) {
 }
 
 function spawnApple() {
-    // if (appleSpawned === true) return;
+    const { x, y } = apple;
 
-    let { x, y } = apple;
-
-    const randomNumber = (min, max) => {
-        return Math.floor(Math.random() * (max - min) + min);
-    }
-
-    const randomPosition = () => {
-        const number = randomNumber(0, canvas.width - snakeSize);
-        return Math.floor(number / snakeSize) * snakeSize;
-    }
-
-    x = randomPosition();
-    y = randomPosition();
-    
     context.fillStyle = "#F00";
-    context.fillRect(x, y, 50, 50);
-    appleSpawned = true;
+    context.fillRect(x, y, pointSize, pointSize);
 }
 
 function drawSnake() {
@@ -147,7 +136,7 @@ function drawSnake() {
             context.fillStyle = snakeColors.head;
         }
 
-        context.fillRect(position.x, position.y, snakeSize, snakeSize);
+        context.fillRect(position.x, position.y, pointSize, pointSize);
     })
 }
 
@@ -157,19 +146,19 @@ function moveSnake() {
     const head = snake[snake.length - 1];
 
     if (direction === "right") {
-        snake.push({x: head.x + snakeSize, y: head.y});
+        snake.push({x: head.x + pointSize, y: head.y});
     }
 
     if (direction === "left") {
-        snake.push({x: head.x - snakeSize, y: head.y});
+        snake.push({x: head.x - pointSize, y: head.y});
     }
 
     if (direction === "down") {
-        snake.push({x: head.x, y: head.y + snakeSize});
+        snake.push({x: head.x, y: head.y + pointSize});
     }
 
     if (direction === "up") {
-        snake.push({x: head.x, y: head.y - snakeSize});
+        snake.push({x: head.x, y: head.y - pointSize});
     }
 
     snake.shift();
