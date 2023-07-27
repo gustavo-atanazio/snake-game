@@ -39,12 +39,12 @@ const apple = {
 let score = 0;
 const pointAudio = new Audio("./sounds/point_audio.mp3");
 
-startButton.addEventListener("click", () => {
+startButton.onclick = () => {
     createCanvas();
     showButtons();
     drawBoard();
     gameLoop();
-});
+};
 
 function createCanvas() {
     const canvasElement = document.createElement("canvas");
@@ -95,9 +95,6 @@ function drawBoard() {
     drawLine(colors.firstColor, colors.secondColor, 400);
     drawLine(colors.secondColor, colors.firstColor, 500);
     drawLine(colors.firstColor, colors.secondColor, 600);
-
-    // context.fillStyle = "#F00";
-    // context.fillRect(10, 10, 10, 10);
 }
 
 function gameLoop() {
@@ -108,8 +105,9 @@ function gameLoop() {
         spawnApple();
         checkButtonPressed();
         moveSnake();
-        checkEat();
         drawSnake();
+        checkCollision();
+        checkEat();
     }, 300);
 }
 
@@ -188,10 +186,26 @@ function checkEat() {
         apple.y = y;
     }
 
-    score += 100;
+    score += 10;
+}
+
+function checkCollision() {
+    const head = snake[snake.length - 1];
+    const canvasLimit = canvas.width - pointSize;
+    const wallCollision = head.x < 0 || head.x > canvasLimit || head.y < 0 || head.y > canvasLimit;
+
+    const selfCollision = snake.find((position, index) => {
+        return index < snake.length - 2 && position.x === head.x && position.y === head.y;
+    });
+
+    if (wallCollision || selfCollision) {
+        gameOver();
+    }
 }
 
 function checkButtonPressed() {
+    if (!direction) return;
+
     // Mobile verification
     if (window.screen.width < 768) {
         upButton.addEventListener("click", () => {
@@ -259,4 +273,8 @@ function checkButtonPressed() {
             }
         });
     }
+}
+
+function gameOver() {
+    direction = undefined;
 }
