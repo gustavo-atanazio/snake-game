@@ -36,6 +36,9 @@ const apple = {
     y: randomPosition()
 };
 
+let score = 0;
+const pointAudio = new Audio("./sounds/point_audio.mp3");
+
 startButton.addEventListener("click", () => {
     createCanvas();
     showButtons();
@@ -105,6 +108,7 @@ function gameLoop() {
         spawnApple();
         checkButtonPressed();
         moveSnake();
+        checkEat();
         drawSnake();
     }, 300);
 }
@@ -162,6 +166,29 @@ function moveSnake() {
     }
 
     snake.shift();
+}
+
+function checkEat() {
+    const head = snake[snake.length - 1];
+
+    if (head.x === apple.x && head.y === apple.y) {
+        snake.push(head);
+        pointAudio.play();
+
+        // Ensunring that apple won't spawn in the same position as snake
+        let x = randomPosition();
+        let y = randomPosition();
+
+        while (snake.find(position => position.x === x && position.y === y)) {
+            x = randomPosition();
+            y = randomPosition();
+        }
+
+        apple.x = x;
+        apple.y = y;
+    }
+
+    score += 100;
 }
 
 function checkButtonPressed() {
