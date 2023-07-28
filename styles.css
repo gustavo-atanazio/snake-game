@@ -45,29 +45,36 @@ body img {
 
 .up-arrow {
     top: 0;
-    left: 180px;
+    right: 45%;
 }
 
 .left-arrow {
-    right: 235px;
+    right: 60%;
     top: 50px;
 }
 
 .right-arrow {
-    left: 230px;
+    right: 30%;
     top: 50px;
 }
 
 .down-arrow {
     bottom: 0;
-    left: 180px;
+    right: 45%;
+}
+
+.score-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.5rem;
 }
 
 #game-screen {
     background-color: #333;
     border-radius: 10px;
     width: 80%;
-    margin-top: 12rem;
 }
 
 .pressed {
@@ -89,7 +96,11 @@ body img {
 }
 
 @media screen and (min-width: 768px) {
+    body {
+        gap: 1.5rem;
+    }
+
     #game-screen {
-        width: 40%;
+        width: 35%;
     }
 }
