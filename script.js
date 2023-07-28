@@ -8,6 +8,7 @@ let upButton, leftButton, rightButton, downButton;
 
 const pointSize = 50;
 
+// Snake properties
 const snake = [
     {x: 200, y: 200},
     {x: 250, y: 200},
@@ -21,6 +22,7 @@ const snakeColors = {
 
 let direction = "right";
 
+// Apple properties
 function randomPosition() {
     const randomNumber = (min, max) => {
         return Math.floor(Math.random() * (max - min) + min);
@@ -36,20 +38,38 @@ const apple = {
     y: randomPosition()
 };
 
+// Score properties
+let scoreElement;
 let score = 0;
 const pointAudio = new Audio("./sounds/point_audio.mp3");
 
 startButton.onclick = () => {
+    renderScore();
     createCanvas();
     showButtons();
     drawBoard();
     gameLoop();
 };
 
+function renderScore() {
+    body.innerHTML = "";
+
+    const scoreContainer = document.createElement("div");
+    scoreContainer.classList.add("score-container");
+    body.appendChild(scoreContainer);
+
+    const h1 = document.createElement("h1");
+    h1.innerText = "Score";
+    scoreContainer.appendChild(h1);
+
+    scoreElement = document.createElement("span");
+    scoreElement.innerText = score;
+    scoreContainer.appendChild(scoreElement);
+    scoreElement = document.querySelector("span");
+}
+
 function createCanvas() {
     const canvasElement = document.createElement("canvas");
-
-    body.innerHTML = "";
     body.appendChild(canvasElement);
 
     canvasElement.innerText = "Seu navegador não suporta o jogo.";
@@ -63,10 +83,7 @@ function createCanvas() {
 
 function showButtons() {
     // Desktop verification
-    if (window.screen.width >= 768) {
-        canvas.style.marginTop = "0";
-        return;
-    }
+    if (window.screen.width >= 768) return;
 
     // Showing buttons
     body.appendChild(buttonsContainer);
@@ -173,6 +190,10 @@ function checkEat() {
         snake.push(head);
         pointAudio.play();
 
+        // Assigning points
+        score += 10;
+        scoreElement.innerText = score;
+
         // Ensunring that apple won't spawn in the same position as snake
         let x = randomPosition();
         let y = randomPosition();
@@ -185,8 +206,6 @@ function checkEat() {
         apple.x = x;
         apple.y = y;
     }
-
-    score += 10;
 }
 
 function checkCollision() {
