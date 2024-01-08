@@ -2,6 +2,9 @@ const body = document.querySelector("body");
 const startButton = document.querySelector(".start");
 const buttonsContainer = document.querySelector(".arrows-container");
 
+const gameOverElement = document.querySelector('.game-over');
+const restartButton = document.querySelector('#restart');
+
 let canvas, context;
 
 let upButton, leftButton, rightButton, downButton;
@@ -9,7 +12,7 @@ let upButton, leftButton, rightButton, downButton;
 const pointSize = 50;
 
 // Snake properties
-const snake = [
+let snake = [
     {x: 200, y: 200},
     {x: 250, y: 200},
     {x: 300, y: 200}
@@ -43,13 +46,32 @@ let scoreElement;
 let score = 0;
 const pointAudio = new Audio("./sounds/point_audio.mp3");
 
+let loop;
+
 startButton.onclick = () => {
     renderScore();
+
+    body.appendChild(gameOverElement);
+
     createCanvas();
     showButtons();
     drawBoard();
     gameLoop();
 };
+
+restartButton.onclick = () => {
+    restart();
+
+    renderScore();
+
+    body.appendChild(gameOverElement);
+    gameOverElement.classList.add('none');
+
+    createCanvas();
+    showButtons();
+    drawBoard();
+    gameLoop();
+}
 
 function renderScore() {
     body.innerHTML = "";
@@ -115,7 +137,7 @@ function drawBoard() {
 }
 
 function gameLoop() {
-    setInterval(() => {
+    loop = setInterval(() => {
         context.clearRect(0, 0, canvas.width, canvas.height);
         
         drawBoard();
@@ -295,5 +317,20 @@ function checkButtonPressed() {
 }
 
 function gameOver() {
-    direction = undefined;
+    const scoreView = document.querySelector('#score-view');
+
+    clearInterval(loop);
+    gameOverElement.classList.remove('none');
+    scoreView.innerText = score;
+}
+
+function restart() {
+    snake = [
+        {x: 200, y: 200},
+        {x: 250, y: 200},
+        {x: 300, y: 200}
+    ];
+
+    direction = 'right';
+    score = 0;
 }
