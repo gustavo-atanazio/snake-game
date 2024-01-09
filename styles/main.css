@@ -1,0 +1,41 @@
+@import url('arrows.css');
+@import url('game.css');
+@import url('start-button.css');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Kumbh Sans", sans-serif;
+}
+
+body {
+    background-color: #191919;
+    color: #FFF;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8rem;
+    
+    min-height: 100vh;
+}
+
+body img {
+    width: 10rem;
+}
+
+.none {
+    display: none;
+}
+
+@media screen and (min-width: 768px) {
+    body {
+        gap: 1.5rem;
+    }
+
+    #game-screen {
+        width: 35%;
+    }
+}

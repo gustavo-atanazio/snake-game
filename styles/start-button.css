@@ -1,0 +1,9 @@
+.start {
+    padding: 0.7rem 2rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    color: #FFF;
+    background-color: #54B435;
+    cursor: pointer;
+}
