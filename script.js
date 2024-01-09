@@ -48,7 +48,26 @@ const pointAudio = new Audio("./sounds/point_audio.mp3");
 
 let loop;
 
-startButton.onclick = () => {
+startButton.onclick = () => startGame();
+restartButton.onclick = () => restartGame();
+
+// Note: For a better code view, close the functions in the arrow at the left
+
+function gameLoop() {
+    loop = setInterval(() => {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        
+        drawBoard();
+        spawnApple();
+        checkButtonPressed();
+        moveSnake();
+        drawSnake();
+        checkCollision();
+        checkEat();
+    }, 300);
+}
+
+function startGame() {
     renderScore();
 
     body.appendChild(gameOverElement);
@@ -57,9 +76,9 @@ startButton.onclick = () => {
     showButtons();
     drawBoard();
     gameLoop();
-};
+}
 
-restartButton.onclick = () => {
+function restartGame() {
     restart();
 
     renderScore();
@@ -134,20 +153,6 @@ function drawBoard() {
     drawLine(colors.firstColor, colors.secondColor, 400);
     drawLine(colors.secondColor, colors.firstColor, 500);
     drawLine(colors.firstColor, colors.secondColor, 600);
-}
-
-function gameLoop() {
-    loop = setInterval(() => {
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        
-        drawBoard();
-        spawnApple();
-        checkButtonPressed();
-        moveSnake();
-        drawSnake();
-        checkCollision();
-        checkEat();
-    }, 300);
 }
 
 function drawLine(firstColor, secondColor, yPosition) {
