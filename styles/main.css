@@ -19,7 +19,8 @@ body {
     align-items: center;
     gap: 8rem;
     
-    min-height: 100vh;
+    height: 100vh;
+    height: 100dvh;
 }
 
 body img {
